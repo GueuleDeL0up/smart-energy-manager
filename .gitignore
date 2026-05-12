@@ -1,0 +1,29 @@
+# Build artifacts
+target/
+out/
+*.class
+
+# IDE files
+.idea/
+*.iml
+
+# Keep only useful shared workspace config files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# db
+data/smart-energy-manager.db

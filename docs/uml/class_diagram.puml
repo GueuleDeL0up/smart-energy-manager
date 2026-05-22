@@ -1,0 +1,112 @@
+@startuml
+skinparam style strictuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+title Smart Energy Manager - Diagramme de Classes
+
+package "com.smartenergymanager.model" {
+    
+    enum TypeEnergie {
+        ELECTRICITE
+        EAU
+        GAZ
+        CHAUFFAGE
+        CLIMATISATION
+        PRODUCTION_SOLAIRE
+    }
+
+    abstract class Batiment {
+        - id : Long
+        - nom : String
+        - adresse : String
+        - surface : double
+        + Batiment(nom: String, adresse: String, surface: double)
+        + {abstract} cloner() : Batiment
+        + ajouterReleve(releve: Releve)
+        + getConsommationTotale(debut: LocalDate, fin: LocalDate) : double
+    }
+
+    class Maison extends Batiment {
+        - nbPieces : int
+        + cloner() : Batiment
+    }
+
+    class Appartement extends Batiment {
+        - etage : int
+        - numAppartement : String
+        + cloner() : Batiment
+    }
+
+    class Bureau extends Batiment {
+        - entreprise : String
+        - nbPostes : int
+        + cloner() : Batiment
+    }
+
+    class BatimentUniversitaire extends Batiment {
+        - campus : String
+        + cloner() : Batiment
+    }
+
+    class Releve {
+        - id : Long
+        - dateHeure : LocalDateTime
+        - type : TypeEnergie
+        - quantite : double
+        - coutEstime : double
+        + Releve(date: LocalDateTime, type: TypeEnergie, quantite: double, cout: double)
+    }
+
+    class Alerte {
+        - id : Long
+        - message : String
+        - date : LocalDateTime
+        - severite : String
+    }
+}
+
+package "com.smartenergymanager.service" {
+    class BatimentService {
+        + creerBatiment(b : Batiment)
+        + supprimerBatiment(id : Long)
+        + modifierBatiment(b : Batiment)
+        + dupliquerBatiment(id : Long) : Batiment
+    }
+
+    class AnalyseService {
+        + detecterAnomalies(b : Batiment) : List<Alerte>
+        + estimerFactureMensuelle(b : Batiment, mois: int) : double
+        + identifierBatimentPlusConsommateur(batiments : List<Batiment>) : Batiment
+        + calculerEvolution(b : Batiment, type : TypeEnergie) : double
+    }
+
+    class ImportExportService {
+        + importCSV(filePath : String) : List<Releve>
+        + genererDonneesTest(b : Batiment)
+    }
+
+    class ExternalApiService {
+        + recupererMeteo(ville : String) : String
+        + recupererTarifsActuels() : Map<TypeEnergie, Double>
+    }
+}
+
+package "com.smartenergymanager.repository" {
+    interface BatimentRepository {
+        + save(b : Batiment)
+        + findById(id : Long) : Batiment
+        + findAll() : List<Batiment>
+        + delete(id : Long)
+    }
+}
+
+' Relations
+Batiment "1" *-- "0..*" Releve : contient >
+Batiment "1" -- "0..*" Alerte : genere >
+BatimentService ..> BatimentRepository : utilise
+AnalyseService ..> Batiment : analyse
+ImportExportService ..> Releve : cree
+BatimentService ..> Batiment : manipule
+
+@enduml

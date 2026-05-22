@@ -1,5 +1,12 @@
 # ⚡ Smart Energy Manager - Dev
 
+## 📊 Conception (UML)
+
+Le diagramme de classes est stocké dans le dossier `docs/uml/`. 
+- Fichier source : `docs/uml/class_diagram.puml`
+
+---
+
 ## 🏗️ Architecture
 
 ```
@@ -100,3 +107,5 @@ src/
 
 - Classes de test unitaire suffixées `Test`.
 - Noms de méthodes de test en `shouldResultWhenCondition`.
+
+utiliser methode abtraite

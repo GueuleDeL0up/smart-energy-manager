@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
  */
 public class Releve {
     private Long id;
+    private Long batimentId;   // clé étrangère vers la table batiments
     private LocalDateTime dateHeure;
     private TypeEnergie type;
     private double quantite;
@@ -29,6 +30,8 @@ public class Releve {
     // Getters et Setters pour l'accès aux données
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+    public Long getBatimentId() { return batimentId; }
+    public void setBatimentId(Long batimentId) { this.batimentId = batimentId; }
     public LocalDateTime getDateHeure() { return dateHeure; }
     public void setDateHeure(LocalDateTime dateHeure) { this.dateHeure = dateHeure; }
     public TypeEnergie getType() { return type; }

@@ -6,6 +6,7 @@
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Separator?>
@@ -38,6 +39,18 @@
                       prefWidth="200"/>
 
             <Region HBox.hgrow="ALWAYS"/>
+
+            <!-- Prévision : masquée si pas assez de données -->
+            <Label fx:id="lblPrevision" styleClass="prevision-badge"
+                   visible="false" managed="false"/>
+
+            <Separator orientation="VERTICAL" styleClass="toolbar-separator">
+                <HBox.margin><Insets left="4" right="4"/></HBox.margin>
+            </Separator>
+
+            <CheckBox fx:id="chkPrevision" text="Afficher prevision"
+                      styleClass="prevision-check"
+                      onAction="#togglePrevision"/>
 
             <Label fx:id="lblTotalConso" styleClass="kpi-label"/>
         </HBox>

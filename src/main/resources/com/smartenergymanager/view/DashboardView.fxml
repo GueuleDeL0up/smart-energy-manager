@@ -2,20 +2,80 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<!--
-    DashboardView — Tableau de bord principal
-    TODO : remplacer ce placeholder par les vrais composants (KPI, alertes, graphiques)
--->
-<VBox xmlns="http://javafx.com/javafx"
-      xmlns:fx="http://javafx.com/fxml"
-      alignment="CENTER" spacing="12">
-    <padding>
-        <Insets top="40" right="40" bottom="40" left="40"/>
-    </padding>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.smartenergymanager.controller.DashboardController"
+            stylesheets="@../css/styles.css, @../css/batiments-view.css, @../css/dashboard-view.css">
 
-    <Label text="Tableau de bord" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-    <Label text="[En construction — KPI, alertes et graphiques à venir]"
-           style="-fx-text-fill: #6b7280;"/>
-</VBox>
+    <!-- ── En-tête ── -->
+    <top>
+        <HBox styleClass="toolbar" spacing="8" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="12" right="16" bottom="12" left="16"/>
+            </padding>
+            <Label text="Tableau de bord" styleClass="page-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label fx:id="lblDate" styleClass="date-label"/>
+        </HBox>
+    </top>
+
+    <!-- ── Contenu ── -->
+    <center>
+        <VBox spacing="20" styleClass="dashboard-container">
+            <padding>
+                <Insets top="20" right="20" bottom="20" left="20"/>
+            </padding>
+
+            <!-- ── Rangée de KPI cards ── -->
+            <HBox spacing="16">
+
+                <!-- Card 1 : consommation aujourd'hui -->
+                <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" spacing="6">
+                    <Label text="Consommation aujourd'hui" styleClass="kpi-title"/>
+                    <Label fx:id="lblConsoJour" text="--" styleClass="kpi-value"/>
+                    <Label text="unites" styleClass="kpi-unit"/>
+                </VBox>
+
+                <!-- Card 2 : consommation ce mois -->
+                <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" spacing="6">
+                    <Label text="Consommation ce mois" styleClass="kpi-title"/>
+                    <Label fx:id="lblConsoMois" text="--" styleClass="kpi-value"/>
+                    <Label text="unites" styleClass="kpi-unit"/>
+                </VBox>
+
+                <!-- Card 3 : coût estimé du mois -->
+                <VBox styleClass="kpi-card" HBox.hgrow="ALWAYS" spacing="6">
+                    <Label text="Cout estime (mois)" styleClass="kpi-title"/>
+                    <Label fx:id="lblCoutMois" text="--" styleClass="kpi-value"/>
+                    <Label text="euros" styleClass="kpi-unit"/>
+                </VBox>
+
+                <!-- Card 4 : bâtiment le plus consommateur -->
+                <VBox styleClass="kpi-card, kpi-card-accent" HBox.hgrow="ALWAYS" spacing="6">
+                    <Label text="+ grand consommateur" styleClass="kpi-title"/>
+                    <Label fx:id="lblTopBatiment" text="--" styleClass="kpi-value-sm"/>
+                    <Label fx:id="lblTopConso" text="" styleClass="kpi-unit"/>
+                </VBox>
+
+            </HBox>
+
+            <Separator/>
+
+            <!-- ── Derniers relevés ── -->
+            <VBox spacing="10" VBox.vgrow="ALWAYS">
+                <Label text="Derniers releves enregistres" styleClass="section-title"/>
+                <ListView fx:id="lstDerniersReleves" VBox.vgrow="ALWAYS"
+                          styleClass="releves-list"/>
+            </VBox>
+
+        </VBox>
+    </center>
+
+</BorderPane>

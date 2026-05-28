@@ -6,43 +6,50 @@ import com.smartenergymanager.model.TypeEnergie;
 import com.smartenergymanager.repository.SQLiteBatimentRepository;
 import com.smartenergymanager.repository.SQLiteReleveRepository;
 import com.smartenergymanager.service.BatimentService;
+import com.smartenergymanager.service.PredictionService;
 import com.smartenergymanager.service.ReleveService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.chart.*;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
  * Contrôleur de la vue StatistiquesView.fxml.
- * Agrège les données de relevés et alimente les trois graphiques JavaFX.
+ * Agrège les relevés et alimente les graphiques + la prédiction.
  */
 public class StatistiquesController {
 
-    @FXML private ComboBox<Batiment> cbxFiltreBatiment;
-    @FXML private Label              lblTotalConso;
+    @FXML private ComboBox<Batiment>        cbxFiltreBatiment;
+    @FXML private CheckBox                  chkPrevision;
+    @FXML private Label                     lblPrevision;
+    @FXML private Label                     lblTotalConso;
 
-    @FXML private LineChart<String, Number>  chartEvolution;
-    @FXML private PieChart                   chartRepartition;
-    @FXML private BarChart<String, Number>   chartComparatif;
+    @FXML private LineChart<String, Number> chartEvolution;
+    @FXML private PieChart                  chartRepartition;
+    @FXML private BarChart<String, Number>  chartComparatif;
 
-    private final ReleveService   releveService   = new ReleveService(new SQLiteReleveRepository());
-    private final BatimentService batimentService = new BatimentService(new SQLiteBatimentRepository());
+    private final ReleveService    releveService    = new ReleveService(new SQLiteReleveRepository());
+    private final BatimentService  batimentService  = new BatimentService(new SQLiteBatimentRepository());
+    private final PredictionService predictionService = new PredictionService();
 
     private Map<Long, String> nomsBatiments;
+    private List<Releve>      relevesCourants = List.of();
+
     private static final DateTimeFormatter FMT_MOIS = DateTimeFormatter.ofPattern("MM/yyyy");
 
     @FXML
     public void initialize() {
         chargerBatiments();
-        rafraichir(null); // charge tout au démarrage
+        rafraichir(null);
 
         cbxFiltreBatiment.getSelectionModel().selectedItemProperty()
                 .addListener((obs, ancien, nouveau) -> rafraichir(nouveau));
@@ -56,7 +63,7 @@ public class StatistiquesController {
                 .collect(Collectors.toMap(Batiment::getId, Batiment::getNom));
 
         ObservableList<Batiment> options = FXCollections.observableArrayList();
-        options.add(null); // "Tous les bâtiments"
+        options.add(null);
         options.addAll(batiments);
         cbxFiltreBatiment.setItems(options);
         cbxFiltreBatiment.setCellFactory(lv -> celleBatiment());
@@ -65,41 +72,71 @@ public class StatistiquesController {
     }
 
     private void rafraichir(Batiment filtre) {
-        List<Releve> releves = filtre == null
+        relevesCourants = filtre == null
                 ? releveService.findAll()
                 : releveService.findByBatiment(filtre.getId());
 
-        peuplerChartEvolution(releves);
-        peuplerPieChart(releves);
-        peuplerChartComparatif(releves);
-        mettreAJourKPI(releves);
+        peuplerChartEvolution(relevesCourants);
+        peuplerPieChart(relevesCourants);
+        peuplerChartComparatif(relevesCourants);
+        mettreAJourKPI(relevesCourants);
     }
 
-    // ── Alimentation des graphiques ───────────────────────────────────────────
+    // ── Handler checkbox prévision ────────────────────────────────────────────
 
-    /**
-     * LineChart : courbe de la consommation totale par mois (ordre chronologique).
-     */
+    @FXML
+    private void togglePrevision() {
+        peuplerChartEvolution(relevesCourants);
+    }
+
+    // ── Graphiques ────────────────────────────────────────────────────────────
+
     private void peuplerChartEvolution(List<Releve> releves) {
-        Map<String, Double> parMois = releves.stream()
+        // Agrégation mensuelle dans un TreeMap trié
+        TreeMap<YearMonth, Double> parMois = releves.stream()
                 .collect(Collectors.groupingBy(
-                        r -> r.getDateHeure().format(FMT_MOIS),
+                        r -> YearMonth.from(r.getDateHeure()),
+                        TreeMap::new,
                         Collectors.summingDouble(Releve::getQuantite)));
 
-        XYChart.Series<String, Number> serie = new XYChart.Series<>();
-        serie.setName("Consommation");
+        XYChart.Series<String, Number> serieHisto = new XYChart.Series<>();
+        serieHisto.setName("Consommation");
+        parMois.forEach((mois, val) ->
+                serieHisto.getData().add(new XYChart.Data<>(mois.format(FMT_MOIS), val)));
 
-        parMois.entrySet().stream()
-                .sorted(Map.Entry.comparingByKey()) // ordre MM/yyyy croissant
-                .forEach(e -> serie.getData().add(
-                        new XYChart.Data<>(e.getKey(), e.getValue())));
+        // Prévision : on relie le dernier mois connu au mois prédit
+        if (chkPrevision.isSelected() && !parMois.isEmpty()) {
+            double valeurPredite = predictionService.predireProchainMois(releves);
 
-        chartEvolution.getData().setAll(List.of(serie));
+            if (valeurPredite >= 0) {
+                YearMonth dernierMois   = parMois.lastKey();
+                double    valeurDernier = parMois.get(dernierMois);
+                String    nomProchain   = predictionService.nomProchainMois(releves);
+
+                XYChart.Series<String, Number> seriePrevision = new XYChart.Series<>();
+                seriePrevision.setName("Prevision");
+                // Point de connexion au dernier mois réel
+                seriePrevision.getData().add(
+                        new XYChart.Data<>(dernierMois.format(FMT_MOIS), valeurDernier));
+                // Point prédit
+                seriePrevision.getData().add(
+                        new XYChart.Data<>(nomProchain, valeurPredite));
+
+                chartEvolution.getData().setAll(List.of(serieHisto, seriePrevision));
+
+                lblPrevision.setText(String.format(
+                        "Prevision %s : %.1f unites", nomProchain, valeurPredite));
+                lblPrevision.setVisible(true);
+                lblPrevision.setManaged(true);
+                return;
+            }
+        }
+
+        chartEvolution.getData().setAll(List.of(serieHisto));
+        lblPrevision.setVisible(false);
+        lblPrevision.setManaged(false);
     }
 
-    /**
-     * PieChart : part de chaque type d'énergie dans la consommation totale.
-     */
     private void peuplerPieChart(List<Releve> releves) {
         Map<TypeEnergie, Double> parType = releves.stream()
                 .collect(Collectors.groupingBy(
@@ -109,13 +146,9 @@ public class StatistiquesController {
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
         parType.forEach((type, total) ->
                 data.add(new PieChart.Data(type.name(), total)));
-
         chartRepartition.setData(data);
     }
 
-    /**
-     * BarChart : consommation totale par bâtiment (comparatif).
-     */
     private void peuplerChartComparatif(List<Releve> releves) {
         Map<Long, Double> parBatiment = releves.stream()
                 .collect(Collectors.groupingBy(
@@ -124,16 +157,11 @@ public class StatistiquesController {
 
         XYChart.Series<String, Number> serie = new XYChart.Series<>();
         serie.setName("Consommation totale");
-
-        parBatiment.forEach((id, total) -> {
-            String nom = nomsBatiments.getOrDefault(id, "Batiment #" + id);
-            serie.getData().add(new XYChart.Data<>(nom, total));
-        });
-
+        parBatiment.forEach((id, total) ->
+                serie.getData().add(new XYChart.Data<>(
+                        nomsBatiments.getOrDefault(id, "Batiment #" + id), total)));
         chartComparatif.getData().setAll(List.of(serie));
     }
-
-    // ── KPI ───────────────────────────────────────────────────────────────────
 
     private void mettreAJourKPI(List<Releve> releves) {
         double total = releves.stream().mapToDouble(Releve::getQuantite).sum();
@@ -142,8 +170,6 @@ public class StatistiquesController {
                 "Total : %.1f unites  |  Cout : %.2f euro  |  %d releve(s)",
                 total, cout, releves.size()));
     }
-
-    // ── Helper ────────────────────────────────────────────────────────────────
 
     private ListCell<Batiment> celleBatiment() {
         return new ListCell<>() {

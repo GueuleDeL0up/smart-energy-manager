@@ -1,11 +1,11 @@
 /* ═══════════════════════════════════════════════════════
-   MainView — Styles de la mise en page principale
-   (sidebar + zone de contenu)
+   MainView — Mise en page principale (sidebar + contenu)
    ═══════════════════════════════════════════════════════ */
 
 /* ── Sidebar ── */
 .sidebar {
     -fx-background-color: -sem-bg-sidebar;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 8, 0, 2, 0);
 }
 
 .sidebar-title {
@@ -40,6 +40,7 @@
     -fx-cursor: hand;
     -fx-background-radius: 6;
     -fx-border-color: transparent;
+    -fx-border-radius: 6;
 }
 
 .nav-button:hover {
@@ -47,9 +48,19 @@
     -fx-text-fill: -sem-text-primary;
 }
 
+.nav-button:pressed {
+    -fx-background-color: #1e2442;
+}
+
+/* Bouton actif : fond accent + bordure gauche blanche */
 .nav-button-active {
     -fx-background-color: -sem-accent;
     -fx-text-fill: -sem-text-primary;
+    -fx-font-weight: bold;
+    -fx-border-color: white transparent transparent transparent;
+    -fx-border-width: 0 0 0 3;
+    -fx-border-radius: 0 6 6 0;
+    -fx-background-radius: 0 6 6 0;
 }
 
 .nav-button-active:hover {
@@ -61,10 +72,8 @@
     -fx-background-color: -sem-bg-content;
 }
 
-/* ── Écran de bienvenue (affiché au démarrage) ── */
-.welcome-pane {
-    -fx-padding: 40;
-}
+/* ── Écran de bienvenue ── */
+.welcome-pane { -fx-padding: 40; }
 
 .welcome-title {
     -fx-font-size: 22px;

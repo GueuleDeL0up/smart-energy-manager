@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════
-   BatimentsList — Styles de la vue de gestion des bâtiments
+   Composants partagés — toolbar, boutons, tableaux
+   (inclus par BatimentsList, ConsommationsList, StatistiquesView)
    ═══════════════════════════════════════════════════════ */
 
 /* ── Barre d'outils ── */
@@ -7,6 +8,7 @@
     -fx-background-color: #ffffff;
     -fx-border-color: #e5e7eb;
     -fx-border-width: 0 0 1 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 4, 0, 0, 2);
 }
 
 .page-title {
@@ -19,34 +21,42 @@
     -fx-background-color: #e5e7eb;
 }
 
+.filter-label {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13px;
+}
+
 /* ── Boutons ── */
 .btn-primary {
     -fx-background-color: -sem-accent;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-background-radius: 6;
-    -fx-padding: 7 14 7 14;
+    -fx-padding: 7 16 7 16;
     -fx-cursor: hand;
 }
-.btn-primary:hover { -fx-background-color: -sem-accent-hover; }
+.btn-primary:hover   { -fx-background-color: -sem-accent-hover; }
+.btn-primary:pressed { -fx-background-color: #2563eb; }
 
 .btn-secondary {
     -fx-background-color: #f3f4f6;
     -fx-text-fill: -sem-text-dark;
     -fx-background-radius: 6;
-    -fx-padding: 7 14 7 14;
+    -fx-padding: 7 16 7 16;
     -fx-cursor: hand;
 }
-.btn-secondary:hover { -fx-background-color: #e5e7eb; }
+.btn-secondary:hover   { -fx-background-color: #e5e7eb; }
+.btn-secondary:pressed { -fx-background-color: #d1d5db; }
 
 .btn-danger {
     -fx-background-color: #fee2e2;
     -fx-text-fill: #dc2626;
     -fx-background-radius: 6;
-    -fx-padding: 7 14 7 14;
+    -fx-padding: 7 16 7 16;
     -fx-cursor: hand;
 }
-.btn-danger:hover { -fx-background-color: #fecaca; }
+.btn-danger:hover   { -fx-background-color: #fecaca; }
+.btn-danger:pressed { -fx-background-color: #fca5a5; }
 
 /* ── Tableau ── */
 .data-table {
@@ -54,14 +64,34 @@
     -fx-border-color: transparent;
 }
 
-.data-table .column-header {
+.data-table .column-header-background {
     -fx-background-color: #f9fafb;
-    -fx-font-weight: bold;
-    -fx-text-fill: #374151;
 }
 
-.data-table .table-row-cell:selected {
+.data-table .column-header {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+    -fx-border-color: transparent #e5e7eb transparent transparent;
+    -fx-border-width: 0 1 0 0;
+}
+
+/* Lignes alternées */
+.data-table .table-row-cell:even {
+    -fx-background-color: #ffffff;
+}
+
+.data-table .table-row-cell:odd {
+    -fx-background-color: #f9fafb;
+}
+
+.data-table .table-row-cell:hover {
     -fx-background-color: #eff6ff;
+}
+
+.data-table .table-row-cell:selected,
+.data-table .table-row-cell:selected:hover {
+    -fx-background-color: #dbeafe;
     -fx-text-fill: -sem-text-dark;
 }
 

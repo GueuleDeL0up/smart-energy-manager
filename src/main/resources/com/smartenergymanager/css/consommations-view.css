@@ -1,0 +1,14 @@
+/* ═══════════════════════════════════════════════════════
+   ConsommationsList + ConsommationForm — Styles
+   ═══════════════════════════════════════════════════════ */
+
+/* Réutilise les classes définies dans batiments-view.css :
+   .toolbar, .page-title, .toolbar-separator, .btn-primary,
+   .btn-secondary, .btn-danger, .data-table, .status-bar,
+   .status-label, .table-placeholder, .form-label
+   Ces classes sont disponibles via styles.css (variables globales). */
+
+.filter-label {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13px;
+}

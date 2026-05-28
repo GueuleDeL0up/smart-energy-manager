@@ -7,6 +7,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Utilitaire gérant la connexion à la base de données SQLite.
@@ -36,11 +38,16 @@ public class DatabaseConnection {
         InputStream is = DatabaseConnection.class.getResourceAsStream("/schema.sql");
         String contenu = new String(is.readAllBytes(), StandardCharsets.UTF_8);
 
-        // Découpe sur ";" pour exécuter chaque instruction séparément
+        // Supprime les lignes de commentaires AVANT de découper sur ";"
+        // (sinon le premier bloc commence par "--" et toute la CREATE TABLE est ignorée)
+        String sqlPropre = Arrays.stream(contenu.split("\n"))
+                .filter(ligne -> !ligne.strip().startsWith("--"))
+                .collect(Collectors.joining("\n"));
+
         try (Statement stmt = getConnection().createStatement()) {
-            for (String instruction : contenu.split(";")) {
+            for (String instruction : sqlPropre.split(";")) {
                 String sql = instruction.strip();
-                if (!sql.isEmpty() && !sql.startsWith("--")) {
+                if (!sql.isEmpty()) {
                     stmt.execute(sql);
                 }
             }

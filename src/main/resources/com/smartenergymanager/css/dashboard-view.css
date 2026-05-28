@@ -1,0 +1,88 @@
+/* ═══════════════════════════════════════════════════════
+   DashboardView — Styles du tableau de bord
+   ═══════════════════════════════════════════════════════ */
+
+.dashboard-container {
+    -fx-background-color: -sem-bg-content;
+}
+
+.date-label {
+    -fx-text-fill: -sem-text-muted;
+    -fx-font-size: 13px;
+}
+
+/* ── KPI Cards ── */
+.kpi-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-padding: 18 22 18 22;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 2);
+    -fx-cursor: default;
+}
+
+.kpi-card:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.14), 14, 0, 0, 4);
+    -fx-translate-y: -2;
+}
+
+.kpi-card-accent {
+    -fx-background-color: -sem-accent;
+}
+
+.kpi-card-accent:hover {
+    -fx-background-color: -sem-accent-hover;
+    -fx-effect: dropshadow(gaussian, rgba(79,142,247,0.35), 14, 0, 0, 4);
+}
+
+.kpi-card-accent .kpi-title,
+.kpi-card-accent .kpi-value-sm,
+.kpi-card-accent .kpi-unit {
+    -fx-text-fill: white;
+}
+
+.kpi-title {
+    -fx-font-size: 11px;
+    -fx-text-fill: #6b7280;
+    -fx-font-weight: normal;
+    -fx-text-transform: uppercase;
+}
+
+.kpi-value {
+    -fx-font-size: 34px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -sem-text-dark;
+}
+
+.kpi-value-sm {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -sem-text-dark;
+    -fx-wrap-text: true;
+}
+
+.kpi-unit {
+    -fx-font-size: 11px;
+    -fx-text-fill: #9ca3af;
+}
+
+/* ── Section titre ── */
+.section-title {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -sem-text-dark;
+}
+
+/* ── Liste des relevés récents ── */
+.releves-list {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-font-family: "Courier New", monospace;
+    -fx-font-size: 12px;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 8;
+}
+
+.releves-list .list-cell:even  { -fx-background-color: #ffffff; }
+.releves-list .list-cell:odd   { -fx-background-color: #f9fafb; }
+.releves-list .list-cell:hover { -fx-background-color: #eff6ff; }
+.releves-list .list-cell:selected { -fx-background-color: #dbeafe; }

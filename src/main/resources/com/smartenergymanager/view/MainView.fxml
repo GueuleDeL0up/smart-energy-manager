@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.smartenergymanager.controller.MainController"
+            stylesheets="@../css/styles.css, @../css/main-view.css">
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--  SIDEBAR GAUCHE — Navigation principale         -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <left>
+        <VBox fx:id="sidebar" styleClass="sidebar" prefWidth="210" spacing="6">
+            <padding>
+                <Insets top="24" right="12" bottom="24" left="12"/>
+            </padding>
+
+            <!-- En-tête / Logo -->
+            <Label text="Smart Energy" styleClass="sidebar-title"/>
+            <Label text="Manager" styleClass="sidebar-subtitle"/>
+
+            <Separator styleClass="sidebar-separator">
+                <VBox.margin>
+                    <Insets top="8" bottom="8"/>
+                </VBox.margin>
+            </Separator>
+
+            <!-- Boutons de navigation -->
+            <!-- fx:id = référence Java | onAction = méthode du contrôleur -->
+            <Button fx:id="btnDashboard"
+                    text="Tableau de bord"
+                    styleClass="nav-button, nav-button-active"
+                    maxWidth="Infinity"
+                    onAction="#naviguerVersDashboard"/>
+
+            <Button fx:id="btnBatiments"
+                    text="Batiments"
+                    styleClass="nav-button"
+                    maxWidth="Infinity"
+                    onAction="#naviguerVersBatiments"/>
+
+            <Button fx:id="btnConsommations"
+                    text="Consommations"
+                    styleClass="nav-button"
+                    maxWidth="Infinity"
+                    onAction="#naviguerVersConsommations"/>
+
+            <Button fx:id="btnStatistiques"
+                    text="Statistiques"
+                    styleClass="nav-button"
+                    maxWidth="Infinity"
+                    onAction="#naviguerVersStatistiques"/>
+
+            <!-- Espaceur flexible : pousse les éléments suivants vers le bas -->
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Separator styleClass="sidebar-separator">
+                <VBox.margin>
+                    <Insets bottom="8"/>
+                </VBox.margin>
+            </Separator>
+
+            <!-- Label de version en bas de sidebar -->
+            <Label fx:id="lblVersion" text="v1.0.0" styleClass="sidebar-version"/>
+        </VBox>
+    </left>
+
+    <!-- ═══════════════════════════════════════════════ -->
+    <!--  ZONE CENTRALE — Contenu chargé dynamiquement   -->
+    <!-- ═══════════════════════════════════════════════ -->
+    <center>
+        <!--
+            Le MainController remplace le contenu de ce StackPane
+            en appelant : contentArea.getChildren().setAll(nouvelleVue)
+        -->
+        <StackPane fx:id="contentArea" styleClass="content-area">
+            <!-- Vue de démarrage affichée avant la première navigation -->
+            <VBox alignment="CENTER" spacing="12" styleClass="welcome-pane">
+                <Label text="Bienvenue dans Smart Energy Manager"
+                       styleClass="welcome-title"/>
+                <Label text="Selectionnez une section dans le menu pour commencer."
+                       styleClass="welcome-subtitle"/>
+            </VBox>
+        </StackPane>
+    </center>
+
+</BorderPane>

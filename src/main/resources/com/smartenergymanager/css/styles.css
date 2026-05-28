@@ -1,0 +1,127 @@
+/* ═══════════════════════════════════════════════════════
+   Smart Energy Manager — Styles globaux
+   ═══════════════════════════════════════════════════════ */
+
+.root {
+    -sem-bg-dark:      #1a1d2e;
+    -sem-bg-sidebar:   #12152a;
+    -sem-bg-content:   #f0f2f8;
+    -sem-accent:       #4f8ef7;
+    -sem-accent-hover: #3a7ae8;
+    -sem-text-primary: #ffffff;
+    -sem-text-muted:   #8b92b3;
+    -sem-text-dark:    #1a1d2e;
+
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 13px;
+}
+
+/* ── Champs de saisie ── */
+.text-field,
+.text-area,
+.password-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 7 10 7 10;
+}
+
+.text-field:focused,
+.text-area:focused,
+.password-field:focused {
+    -fx-border-color: -sem-accent;
+    -fx-effect: dropshadow(gaussian, rgba(79,142,247,0.25), 6, 0, 0, 0);
+}
+
+/* ── ComboBox ── */
+.combo-box {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 3 6 3 6;
+}
+
+.combo-box:focused,
+.combo-box:showing {
+    -fx-border-color: -sem-accent;
+}
+
+.combo-box .list-view {
+    -fx-border-color: #d1d5db;
+    -fx-background-color: white;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.12), 10, 0, 0, 4);
+}
+
+/* ── DatePicker ── */
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.date-picker:focused { -fx-border-color: -sem-accent; }
+
+/* ── Spinner ── */
+.spinner {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #d1d5db;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+}
+
+.spinner:focused { -fx-border-color: -sem-accent; }
+
+/* ── Dialog ── */
+.dialog-pane {
+    -fx-background-color: #ffffff;
+}
+
+.dialog-pane .button-bar .button {
+    -fx-background-radius: 6;
+    -fx-padding: 7 18 7 18;
+    -fx-cursor: hand;
+}
+
+.dialog-pane .button-bar .button:default {
+    -fx-background-color: -sem-accent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.dialog-pane .button-bar .button:default:hover {
+    -fx-background-color: -sem-accent-hover;
+}
+
+/* ── Scrollbar (épurée) ── */
+.scroll-bar:vertical .thumb,
+.scroll-bar:horizontal .thumb {
+    -fx-background-color: #cbd5e1;
+    -fx-background-radius: 4;
+}
+
+.scroll-bar:vertical .thumb:hover,
+.scroll-bar:horizontal .thumb:hover {
+    -fx-background-color: #94a3b8;
+}
+
+.scroll-bar .track,
+.scroll-bar .track-background {
+    -fx-background-color: transparent;
+}
+
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-pref-width: 0;
+    -fx-pref-height: 0;
+}
+
+/* ── Étiquettes de formulaire ── */
+.form-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #374151;
+}

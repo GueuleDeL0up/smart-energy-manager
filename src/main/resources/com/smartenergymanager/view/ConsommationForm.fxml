@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.smartenergymanager.controller.ConsommationFormController"
+      spacing="16" prefWidth="420"
+      stylesheets="@../css/styles.css, @../css/consommations-view.css">
+
+    <padding><Insets top="8" right="4" bottom="8" left="4"/></padding>
+
+    <GridPane hgap="12" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="140" maxWidth="140"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <!-- Bâtiment -->
+        <Label text="Batiment *"
+               GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <ComboBox fx:id="cbxBatiment"
+                  GridPane.rowIndex="0" GridPane.columnIndex="1"
+                  promptText="Selectionner un batiment" maxWidth="Infinity"/>
+
+        <!-- Date -->
+        <Label text="Date *"
+               GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+        <DatePicker fx:id="dpDate"
+                    GridPane.rowIndex="1" GridPane.columnIndex="1"
+                    maxWidth="Infinity"/>
+
+        <!-- Heure -->
+        <Label text="Heure (HH:mm) *"
+               GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtHeure"
+                   GridPane.rowIndex="2" GridPane.columnIndex="1"
+                   promptText="ex : 14:30"/>
+
+        <!-- Type d'énergie -->
+        <Label text="Type d'energie *"
+               GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+        <ComboBox fx:id="cbxTypeEnergie"
+                  GridPane.rowIndex="3" GridPane.columnIndex="1"
+                  maxWidth="Infinity"/>
+
+        <!-- Quantité -->
+        <Label text="Quantite *"
+               GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtQuantite"
+                   GridPane.rowIndex="4" GridPane.columnIndex="1"
+                   promptText="ex : 45.5"/>
+
+        <!-- Coût estimé -->
+        <Label text="Cout estime (euro) *"
+               GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtCout"
+                   GridPane.rowIndex="5" GridPane.columnIndex="1"
+                   promptText="ex : 12.80"/>
+    </GridPane>
+
+</VBox>

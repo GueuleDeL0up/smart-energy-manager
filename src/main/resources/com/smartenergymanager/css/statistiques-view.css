@@ -1,0 +1,64 @@
+/* ═══════════════════════════════════════════════════════
+   StatistiquesView — Styles des graphiques
+   ═══════════════════════════════════════════════════════ */
+
+.charts-container {
+    -fx-background-color: -sem-bg-content;
+}
+
+.kpi-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -sem-text-dark;
+}
+
+/* Fond blanc + bord arrondi pour chaque graphique */
+.chart {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+    -fx-border-color: #e5e7eb;
+    -fx-border-radius: 8;
+    -fx-padding: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);
+}
+
+.chart-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -sem-text-dark;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+/* ── Série 1 du LineChart : prévision en pointillés rouges ── */
+.line-chart .chart-series-line.series1 {
+    -fx-stroke: #e74c3c;
+    -fx-stroke-width: 2.5;
+    -fx-stroke-dash-array: 10 6;
+}
+
+.line-chart .default-color1.chart-line-symbol {
+    -fx-background-color: #e74c3c, white;
+    -fx-background-radius: 4;
+}
+
+/* ── Label badge de prévision dans la toolbar ── */
+.prevision-badge {
+    -fx-background-color: #fef3c7;
+    -fx-text-fill: #92400e;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 6;
+    -fx-padding: 4 10 4 10;
+    -fx-border-color: #fcd34d;
+    -fx-border-radius: 6;
+}
+
+/* ── CheckBox prévision ── */
+.prevision-check {
+    -fx-text-fill: -sem-text-dark;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+}

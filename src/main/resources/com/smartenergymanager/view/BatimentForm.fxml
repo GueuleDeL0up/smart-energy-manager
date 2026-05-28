@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.smartenergymanager.controller.BatimentFormController"
+      spacing="16" prefWidth="420"
+      stylesheets="@../css/styles.css, @../css/batiments-view.css">
+
+    <padding><Insets top="8" right="4" bottom="8" left="4"/></padding>
+
+    <!-- ── Champs communs ── -->
+    <GridPane hgap="12" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130" maxWidth="130"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+
+        <Label text="Type *"        GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <ComboBox fx:id="cbxType"   GridPane.rowIndex="0" GridPane.columnIndex="1"
+                  promptText="Sélectionner un type" maxWidth="Infinity"/>
+
+        <Label text="Nom *"         GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtNom"   GridPane.rowIndex="1" GridPane.columnIndex="1"
+                   promptText="ex : Maison Dupont"/>
+
+        <Label text="Adresse *"         GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtAdresse"   GridPane.rowIndex="2" GridPane.columnIndex="1"
+                   promptText="ex : 12 rue des Lilas, Lyon"/>
+
+        <Label text="Surface (m²) *"  GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtSurface"      GridPane.rowIndex="3" GridPane.columnIndex="1"
+                   promptText="ex : 85.5"/>
+    </GridPane>
+
+    <!-- ── Sections spécifiques (visible uniquement quand un type est choisi) ── -->
+
+    <Separator fx:id="separateurSpecifique" visible="false" managed="false"/>
+
+    <!-- Maison -->
+    <GridPane fx:id="sectionMaison" visible="false" managed="false" hgap="12" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130" maxWidth="130"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+        <Label text="Nb. pièces *"     GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <Spinner fx:id="spnNbPieces"   GridPane.rowIndex="0" GridPane.columnIndex="1"
+                 editable="true" maxWidth="Infinity"/>
+    </GridPane>
+
+    <!-- Appartement -->
+    <GridPane fx:id="sectionAppartement" visible="false" managed="false" hgap="12" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130" maxWidth="130"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+        <Label text="Étage *"               GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <Spinner fx:id="spnEtage"           GridPane.rowIndex="0" GridPane.columnIndex="1"
+                 editable="true" maxWidth="Infinity"/>
+        <Label text="N° appartement *"          GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtNumAppartement"    GridPane.rowIndex="1" GridPane.columnIndex="1"
+                   promptText="ex : A42"/>
+    </GridPane>
+
+    <!-- Bureau -->
+    <GridPane fx:id="sectionBureau" visible="false" managed="false" hgap="12" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130" maxWidth="130"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+        <Label text="Entreprise *"      GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtEntreprise" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                   promptText="ex : Acme Corp"/>
+        <Label text="Nb. postes *"      GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="form-label"/>
+        <Spinner fx:id="spnNbPostes"    GridPane.rowIndex="1" GridPane.columnIndex="1"
+                 editable="true" maxWidth="Infinity"/>
+    </GridPane>
+
+    <!-- Bâtiment universitaire -->
+    <GridPane fx:id="sectionUniversitaire" visible="false" managed="false" hgap="12" vgap="12">
+        <columnConstraints>
+            <ColumnConstraints minWidth="130" maxWidth="130"/>
+            <ColumnConstraints hgrow="ALWAYS"/>
+        </columnConstraints>
+        <Label text="Campus *"      GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="form-label"/>
+        <TextField fx:id="txtCampus" GridPane.rowIndex="0" GridPane.columnIndex="1"
+                   promptText="ex : Campus Sciences"/>
+    </GridPane>
+
+</VBox>

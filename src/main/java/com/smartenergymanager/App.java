@@ -1,5 +1,6 @@
 package com.smartenergymanager;
 
+import com.smartenergymanager.database.DatabaseConnection;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,6 +18,7 @@ public class App extends Application {
      */
     @Override
     public void start(Stage primaryStage) throws Exception {
+        DatabaseConnection.initialiserSchema();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/smartenergymanager/view/MainView.fxml"));
         Parent root = loader.load();
         primaryStage.setTitle("Smart Energy Manager");

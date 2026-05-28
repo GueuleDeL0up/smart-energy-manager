@@ -1,0 +1,29 @@
+/* ═══════════════════════════════════════════════════════
+   StatistiquesView — Styles des graphiques
+   ═══════════════════════════════════════════════════════ */
+
+.charts-container {
+    -fx-background-color: -sem-bg-content;
+}
+
+.kpi-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: -sem-text-dark;
+}
+
+.filter-label {
+    -fx-text-fill: #6b7280;
+    -fx-font-size: 13px;
+}
+
+/* Fond blanc pour chaque graphique */
+.chart {
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+}
+
+.chart-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}

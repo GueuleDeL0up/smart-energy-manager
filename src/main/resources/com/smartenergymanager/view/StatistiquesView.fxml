@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.smartenergymanager.controller.StatistiquesController"
+            stylesheets="@../css/styles.css, @../css/batiments-view.css, @../css/statistiques-view.css">
+
+    <!-- ── Barre d'outils ── -->
+    <top>
+        <HBox styleClass="toolbar" spacing="8" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="12" right="16" bottom="12" left="16"/>
+            </padding>
+
+            <Label text="Statistiques" styleClass="page-title"/>
+
+            <Separator orientation="VERTICAL" styleClass="toolbar-separator">
+                <HBox.margin><Insets left="4" right="4"/></HBox.margin>
+            </Separator>
+
+            <Label text="Batiment :" styleClass="filter-label"/>
+            <ComboBox fx:id="cbxFiltreBatiment"
+                      promptText="Tous les batiments"
+                      prefWidth="200"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Label fx:id="lblTotalConso" styleClass="kpi-label"/>
+        </HBox>
+    </top>
+
+    <!-- ── Grille des graphiques ── -->
+    <center>
+        <VBox spacing="12" styleClass="charts-container">
+            <padding>
+                <Insets top="12" right="16" bottom="12" left="16"/>
+            </padding>
+
+            <!-- Ligne 1 : évolution temporelle + répartition par énergie -->
+            <HBox spacing="12" VBox.vgrow="ALWAYS">
+
+                <!-- Courbe d'évolution mensuelle -->
+                <LineChart fx:id="chartEvolution"
+                           title="Evolution mensuelle de la consommation"
+                           animated="false"
+                           HBox.hgrow="ALWAYS">
+                    <xAxis>
+                        <CategoryAxis label="Mois"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis label="Quantite"/>
+                    </yAxis>
+                </LineChart>
+
+                <!-- Répartition par type d'énergie -->
+                <PieChart fx:id="chartRepartition"
+                          title="Repartition par type d'energie"
+                          animated="false"
+                          prefWidth="320"
+                          labelsVisible="true"/>
+            </HBox>
+
+            <!-- Ligne 2 : comparatif entre bâtiments -->
+            <BarChart fx:id="chartComparatif"
+                      title="Consommation totale par batiment"
+                      animated="false"
+                      VBox.vgrow="ALWAYS">
+                <xAxis>
+                    <CategoryAxis label="Batiment"/>
+                </xAxis>
+                <yAxis>
+                    <NumberAxis label="Consommation totale"/>
+                </yAxis>
+            </BarChart>
+
+        </VBox>
+    </center>
+
+</BorderPane>

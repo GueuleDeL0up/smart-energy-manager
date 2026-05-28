@@ -1,111 +1,133 @@
-# ⚡ Smart Energy Manager - Dev
+# Smart Energy Manager — Documentation développeur
 
-## 📊 Conception (UML)
+## Lancer le projet
 
-Le diagramme de classes est stocké dans le dossier `docs/uml/`. 
-- Fichier source : `docs/uml/class_diagram.puml`
+```bash
+mvn javafx:run        # démarre l'application
+mvn test              # lance les 24 tests JUnit
+mvn clean compile     # compile sans lancer
+```
+
+La base de données `smart_energy.db` est créée automatiquement à la racine au premier lancement. Elle est ignorée par git (`.gitignore`).
 
 ---
 
-## 🏗️ Architecture
+## Architecture
+
+L'application suit le pattern **MVC** strict avec une couche **Repository** pour la persistance :
+
+```
+Vue (FXML)  ←→  Contrôleur  ←→  Service  ←→  Repository  ←→  SQLite
+```
+
+Aucune logique métier dans les contrôleurs. Aucun SQL dans les services.
+
+---
+
+## Structure des sources
 
 ```
 src/
-  main/
-    java/
-      com/
-        smartenergymanager/
-          controller/
-            MainController.java
-          database/
-            DatabaseConnection.java
-          model/
-            Device.java
-            Consumption.java
-          repository/
-            DeviceRepository.java
-          service/
-            DeviceService.java
-          App.java
-    resources/
-      com/
-        smartenergymanager/
-          css/
-            styles.css
-          view/
-            MainView.fxml
-      schema.sql
-  test/
-    java/
-      com/
-        smartenergymanager/
-          service/
-          repository/
-    resources/
+├── main/
+│   ├── java/com/smartenergymanager/
+│   │   ├── App.java                            Point d'entrée JavaFX
+│   │   ├── controller/
+│   │   │   ├── MainController.java             Navigation entre les vues
+│   │   │   ├── DashboardController.java        KPI + derniers relevés
+│   │   │   ├── BatimentsController.java        Liste CRUD des bâtiments
+│   │   │   ├── BatimentFormController.java     Formulaire création/édition
+│   │   │   ├── ConsommationsController.java    Liste + filtre des relevés
+│   │   │   ├── ConsommationFormController.java Formulaire saisie relevé
+│   │   │   └── StatistiquesController.java     Graphiques + prédiction
+│   │   ├── database/
+│   │   │   └── DatabaseConnection.java         Singleton SQLite + init schema
+│   │   ├── model/
+│   │   │   ├── TypeEnergie.java                Enum (ELECTRICITE, EAU, GAZ…)
+│   │   │   ├── Batiment.java                   Classe abstraite commune
+│   │   │   ├── Maison.java                     Sous-type : nbPieces
+│   │   │   ├── Appartement.java                Sous-type : etage, numAppartement
+│   │   │   ├── Bureau.java                     Sous-type : entreprise, nbPostes
+│   │   │   ├── BatimentUniversitaire.java      Sous-type : campus
+│   │   │   ├── Releve.java                     Relevé de consommation
+│   │   │   └── Alerte.java                     Alerte d'anomalie
+│   │   ├── repository/
+│   │   │   ├── BatimentRepository.java         Interface CRUD bâtiments
+│   │   │   ├── ReleveRepository.java           Interface CRUD relevés
+│   │   │   ├── SQLiteBatimentRepository.java   Implémentation SQLite
+│   │   │   └── SQLiteReleveRepository.java     Implémentation SQLite
+│   │   └── service/
+│   │       ├── BatimentService.java            CRUD + duplication (Prototype)
+│   │       ├── ReleveService.java              CRUD relevés
+│   │       ├── AnalyseService.java             Anomalies, factures, évolution
+│   │       ├── ImportExportService.java        Génération données test + CSV
+│   │       └── PredictionService.java          Moyenne mobile pondérée
+│   └── resources/com/smartenergymanager/
+│       ├── view/
+│       │   ├── MainView.fxml                   Layout principal (sidebar + contenu)
+│       │   ├── DashboardView.fxml              Tableau de bord
+│       │   ├── BatimentsList.fxml              Liste des bâtiments
+│       │   ├── BatimentForm.fxml               Formulaire bâtiment
+│       │   ├── ConsommationsList.fxml          Liste des relevés
+│       │   ├── ConsommationForm.fxml           Formulaire relevé
+│       │   └── StatistiquesView.fxml           Graphiques + prévision
+│       ├── css/
+│       │   ├── styles.css                      Variables globales + inputs
+│       │   ├── main-view.css                   Sidebar + navigation
+│       │   ├── batiments-view.css              Composants partagés (toolbar, boutons, tableaux)
+│       │   ├── dashboard-view.css              KPI cards
+│       │   ├── consommations-view.css          Spécifique consommations
+│       │   └── statistiques-view.css           Graphiques + série prédiction
+│       └── schema.sql                          Définition des tables SQLite
+└── test/
+    └── java/com/smartenergymanager/
+        ├── service/
+        │   ├── BatimentServiceTest.java        7 tests unitaires (repo en mémoire)
+        │   └── AnalyseServiceTest.java         8 tests unitaires
+        └── repository/
+            └── SQLiteBatimentRepositoryTest.java  9 tests d'intégration (:memory:)
 ```
-
-- `src/main/java` : contient tout le code Java de l'application.
-  - `App.java` : point d'entrée JavaFX, lance la fenêtre principale.
-  - `controller/` : contient les contrôleurs JavaFX, qui gèrent les événements de l'interface et font le lien entre la vue et la logique métier.
-  - `database/` : contient les classes liées à l'accès SQLite, comme la connexion à la base.
-  - `model/` : contient les classes métier de l'application.
-  - `repository/` : contient la logique d'accès aux données, c'est-à-dire la lecture et l'écriture dans SQLite.
-  - `service/` : contient la logique métier principale et les règles de gestion.
-- `src/main/resources` : contient les ressources chargées par l'application au démarrage.
-  - `schema.sql` : script SQL utilisé pour créer les tables SQLite au premier lancement.
-  - `css/` : contient les feuilles de style JavaFX.
-  - `view/` : contient les fichiers FXML qui décrivent l'interface graphique.
-- `src/test/java` : contient les tests automatiques du projet.
-  - `service/` dans `src/test/java` : contient les tests des services métier.
-  - `repository/` dans `src/test/java` : contient les tests de la couche d'accès aux données.
-- `src/test/resources` : contient les ressources utilisées uniquement par les tests si nécessaire.
 
 ---
 
-## 📏 Conventions de code
+## Patterns de conception utilisés
 
-### 📦 Maven
+| Pattern | Où |
+|---|---|
+| **MVC** | Architecture globale |
+| **Repository** | `BatimentRepository`, `ReleveRepository` + implémentations SQLite |
+| **Singleton** | `DatabaseConnection` |
+| **Prototype** | `Batiment.cloner()` + `BatimentService.dupliquerBatiment()` |
+| **Single Table Inheritance** | Tous les sous-types de `Batiment` dans une seule table SQL avec discriminateur `type` |
 
-- `groupId` en reverse-domain, en minuscules.
-- `artifactId` en `kebab-case`.
-- Structure Maven obligatoire.
+---
 
-### 📁 Packages Java
+## Base de données
 
-- Noms de packages en minuscules.
-- Pas de tiret dans un package.
-- Base du projet: `com.smartenergymanager`.
+Trois tables dans `smart_energy.db` :
 
-### ☕ Fichiers Java
+| Table | Description |
+|---|---|
+| `batiments` | Single Table Inheritance — toutes les sous-classes dans une table, colonnes spécifiques nullables |
+| `releves` | FK `batiment_id` avec `ON DELETE CASCADE` |
+| `alertes` | FK `batiment_id` nullable avec `ON DELETE SET NULL` |
 
-- Un fichier Java contient une classe publique principale.
-- Nom du fichier identique au nom de la classe publique.
-- Classes en `PascalCase`.
+Les clés étrangères SQLite sont activées au démarrage via `PRAGMA foreign_keys = ON`.
 
-### 🏷️ Variables
+Pour les tests d'intégration, `DatabaseConnection.reinitialiser("jdbc:sqlite::memory:")` ouvre une base isolée en mémoire.
 
-- Variables locales en `camelCase`.
-- Booléens : préfixes `is`, `has`, `can`, `should`.
-- Noms explicites, jamais `data`, `tmp`, `value` sans contexte.
+---
 
-### 🔒 Constantes
+## Conventions de code
 
-- Constantes en `UPPER_SNAKE_CASE`.
-- Pour une constante de classe : `private static final`.
+- **Packages** : minuscules, base `com.smartenergymanager`
+- **Classes** : `PascalCase`, suffixes explicites (`Controller`, `Service`, `Repository`)
+- **Méthodes** : `camelCase`, nom commence par un verbe
+- **Constantes** : `UPPER_SNAKE_CASE`, `private static final`
+- **SQL** : uniquement via `PreparedStatement` — jamais de concaténation de chaînes
+- **Commentaires** : uniquement quand le *pourquoi* est non-évident
 
-### 🏛️ Classes
+---
 
-- Classes en `PascalCase`.
-- Suffixes explicites `Controller`, `Repository`, `Service`, (pas de suffixe pour Model).
+## Diagramme de classes
 
-### ⚙️ Fonctions
-
-- Méthodes en `camelCase`.
-- Nom commence par un verbe.
-
-### 🧪 Tests
-
-- Classes de test unitaire suffixées `Test`.
-- Noms de méthodes de test en `shouldResultWhenCondition`.
-
-utiliser methode abtraite
+Source PlantUML : [`docs/uml/class_diagram.puml`](uml/class_diagram.puml)

@@ -1,32 +1,86 @@
-# ⚡️ Smart Energy Manager - README
+# ⚡ Smart Energy Manager
 
-Application graphique développée en JavaFX (architecture MVC) permettant de gérer un ou plusieurs bâtiments et d'assurer le suivi de leurs consommations énergétiques au fil du temps.
+Application de bureau développée en **JavaFX** (architecture MVC) permettant de gérer plusieurs bâtiments et de suivre leurs consommations énergétiques dans le temps.
 
-## 🛠️ Stack Technique
+> Module II.1102 — Projet Algorithmique et Programmation Java (S2 2025-2026)
 
-- **Langage :** Java 25
-- **Gestionnaire de dépendances :** Maven
-- **Interface Graphique :** JavaFX
-- **Persistance des données :** SQLite
+---
 
-## 🎯 Objectifs et Fonctionnalités
+## Fonctionnalités
 
-L'objectif est de fournir un outil numérique ergonomique, modulaire et robuste d'aide à la décision face aux enjeux économiques et environnementaux actuels.
+- 🏢 **Gestion des bâtiments** — Créer, modifier, supprimer et cloner des bâtiments (maison, appartement, bureau, bâtiment universitaire) avec leurs caractéristiques propres.
+- ⚡ **Suivi des consommations** — Saisie manuelle de relevés (électricité, eau, gaz, chauffage, climatisation, production solaire) avec date, quantité et coût estimé.
+- 📊 **Tableau de bord** — Vue synthétique avec les KPI du jour et du mois (consommation totale, coût estimé, bâtiment le plus consommateur) et l'historique des derniers relevés.
+- 📈 **Statistiques** — Courbe d'évolution mensuelle, répartition par type d'énergie (PieChart) et comparatif entre bâtiments (BarChart).
+- 🔮 **Prédiction** — Estimation de la consommation du mois suivant par moyenne mobile pondérée, affichée en pointillés sur le graphique d'évolution.
+- 🔍 **Analyse** — Détection des anomalies de consommation (seuil μ + 2σ), estimation des factures mensuelles et calcul d'évolution mois/mois.
+- 🗂️ **Génération de données test** — Insertion automatique de relevés réalistes sur 6 mois pour tous les bâtiments enregistrés.
 
-- 🏢 **Gestion des bâtiments :** Créer, modifier, supprimer et cloner différents types d'entités (maison, appartement, bureau, local commercial, etc.).
-- 💧 **Suivi des consommations :** Enregistrement manuel ou via import CSV des relevés d'électricité, eau, gaz, chauffage et climatisation.
-- 📊 **Tableau de bord :** Vue synthétique affichant la consommation totale, les coûts estimés, les indicateurs de performance et les alertes.
-- 📈 **Visualisation graphique :** Représentation des données via des courbes temporelles, des histogrammes et des diagrammes pour comparer les bâtiments.
-- 🔍 **Analyse :** Identification du bâtiment le plus consommateur, détection des pics de consommation et estimation des factures mensuelles.
+---
 
-## 🚀 Démarrage
+## Stack technique
 
-L'application se lance depuis la classe principale : `com.smartenergymanager.App`.
+| Composant | Technologie |
+|---|---|
+| Langage | Java 25 |
+| Interface graphique | JavaFX 21 |
+| Persistance | SQLite (via `sqlite-jdbc`) |
+| Build | Maven |
+| Tests | JUnit Jupiter 5.12 |
 
-## 👥 Auteurs
+---
 
-| Nom                    | GitHub                                            |
-| :--------------------- | :------------------------------------------------ |
-| **Maxime BOGNON**      | [@HighMax524](https://github.com/HighMax524/)     |
-| **Maximilien CANONNE** | [@Dprive](https://github.com/Dprive/)             |
-| **Nicolas CLEMENT**    | [@GueuleDeL0up](https://github.com/GueuleDeL0up/) |
+## Prérequis
+
+- **Java 25** ou supérieur
+- **Maven 3.8** ou supérieur
+
+---
+
+## Lancer l'application
+
+```bash
+# Cloner le dépôt
+git clone https://github.com/GueuleDeL0up/smart-energy-manager.git
+cd smart-energy-manager
+
+# Lancer l'application
+mvn javafx:run
+```
+
+La base de données `smart_energy.db` est créée automatiquement à la racine du projet au premier lancement.
+
+---
+
+## Lancer les tests
+
+```bash
+mvn test
+```
+
+24 tests automatiques répartis en 3 classes :
+- `BatimentServiceTest` — 7 tests unitaires (repository en mémoire)
+- `AnalyseServiceTest` — 8 tests unitaires
+- `SQLiteBatimentRepositoryTest` — 9 tests d'intégration (base SQLite `:memory:`)
+
+---
+
+## Architecture
+
+```
+Vue (FXML) ←→ Contrôleur ←→ Service ←→ Repository ←→ SQLite
+```
+
+L'application respecte le pattern MVC strict : aucune logique métier dans les contrôleurs, aucun SQL dans les services. La persistance utilise le pattern Repository avec une implémentation SQLite et le pattern Single Table Inheritance pour la hiérarchie des bâtiments.
+
+Pour plus de détails : [`docs/dev.md`](docs/dev.md)
+
+---
+
+## Auteurs
+
+| Nom | GitHub |
+| :--- | :--- |
+| **Maxime BOGNON** | [@HighMax524](https://github.com/HighMax524/) |
+| **Maximilien CANONNE** | [@Dprive](https://github.com/Dprive/) |
+| **Nicolas CLEMENT** | [@GueuleDeL0up](https://github.com/GueuleDeL0up/) |

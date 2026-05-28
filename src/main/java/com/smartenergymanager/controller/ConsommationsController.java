@@ -5,6 +5,7 @@ import com.smartenergymanager.model.Releve;
 import com.smartenergymanager.repository.SQLiteBatimentRepository;
 import com.smartenergymanager.repository.SQLiteReleveRepository;
 import com.smartenergymanager.service.BatimentService;
+import com.smartenergymanager.service.ImportExportService;
 import com.smartenergymanager.service.ReleveService;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -36,8 +37,9 @@ public class ConsommationsController {
     @FXML private TableColumn<Releve, String> colCout;
     @FXML private Label                       lblStatut;
 
-    private final ReleveService   releveService   = new ReleveService(new SQLiteReleveRepository());
-    private final BatimentService batimentService = new BatimentService(new SQLiteBatimentRepository());
+    private final ReleveService       releveService       = new ReleveService(new SQLiteReleveRepository());
+    private final BatimentService     batimentService     = new BatimentService(new SQLiteBatimentRepository());
+    private final ImportExportService importExportService = new ImportExportService(new SQLiteReleveRepository());
 
     private final ObservableList<Releve> releves = FXCollections.observableArrayList();
     private final DateTimeFormatter fmtDate  = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -83,9 +85,18 @@ public class ConsommationsController {
 
     @FXML
     private void genererDonnees() {
-        // TODO (BLOC 4.8) : générer N relevés aléatoires pour chaque bâtiment
+        List<Batiment> batiments = batimentService.findAll();
+        if (batiments.isEmpty()) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Aucun batiment enregistre.\nCreez d'abord des batiments dans la section Batiments.",
+                    ButtonType.OK).showAndWait();
+            return;
+        }
+        int nb = importExportService.genererDonneesTest(batiments);
+        filtrerReleves(cbxFiltreBatiment.getValue());
         new Alert(Alert.AlertType.INFORMATION,
-                "Génération de données test non encore implémentée.", ButtonType.OK).showAndWait();
+                nb + " releves generes sur 6 mois pour " + batiments.size() + " batiment(s).",
+                ButtonType.OK).showAndWait();
     }
 
     // ── Helpers ───────────────────────────────────────────────────────────────

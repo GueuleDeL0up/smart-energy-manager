@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.smartenergymanager.controller.BatimentsController"
+            stylesheets="@../css/styles.css, @../css/batiments-view.css">
+
+    <!-- ── Barre d'outils ── -->
+    <top>
+        <HBox styleClass="toolbar" spacing="8" alignment="CENTER_LEFT">
+            <padding>
+                <Insets top="12" right="16" bottom="12" left="16"/>
+            </padding>
+
+            <Label text="Batiments" styleClass="page-title"/>
+
+            <Separator orientation="VERTICAL" styleClass="toolbar-separator">
+                <HBox.margin><Insets left="4" right="4"/></HBox.margin>
+            </Separator>
+
+            <Button fx:id="btnNouveau"
+                    text="+ Nouveau"
+                    styleClass="btn-primary"
+                    onAction="#creerBatiment"/>
+
+            <!-- Espaceur : aligne les boutons destructifs à droite -->
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <Button fx:id="btnModifier"
+                    text="Modifier"
+                    styleClass="btn-secondary"
+                    onAction="#modifierBatiment"/>
+
+            <Button fx:id="btnCloner"
+                    text="Cloner"
+                    styleClass="btn-secondary"
+                    onAction="#clonerBatiment"/>
+
+            <Button fx:id="btnSupprimer"
+                    text="Supprimer"
+                    styleClass="btn-danger"
+                    onAction="#supprimerBatiment"/>
+        </HBox>
+    </top>
+
+    <!-- ── Tableau des bâtiments ── -->
+    <center>
+        <!--
+            tblBatiments.setItems(observableList) est fait dans BatimentsController.initialize()
+            Les colonnes sont liées aux propriétés du modèle via PropertyValueFactory
+        -->
+        <TableView fx:id="tblBatiments" styleClass="data-table">
+            <columns>
+                <TableColumn fx:id="colType"    text="Type"       prefWidth="130"/>
+                <TableColumn fx:id="colNom"     text="Nom"        prefWidth="200"/>
+                <TableColumn fx:id="colAdresse" text="Adresse"    prefWidth="280"/>
+                <TableColumn fx:id="colSurface" text="Surface m2" prefWidth="110"/>
+            </columns>
+            <placeholder>
+                <Label text="Aucun batiment enregistre. Cliquez sur '+ Nouveau' pour commencer."
+                       styleClass="table-placeholder"/>
+            </placeholder>
+        </TableView>
+    </center>
+
+    <!-- ── Barre de statut ── -->
+    <bottom>
+        <HBox styleClass="status-bar">
+            <padding>
+                <Insets top="6" right="16" bottom="6" left="16"/>
+            </padding>
+            <Label fx:id="lblStatut" styleClass="status-label"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>

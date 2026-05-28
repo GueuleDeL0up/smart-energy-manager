@@ -31,6 +31,18 @@ public class DatabaseConnection {
     }
 
     /**
+     * Ferme la connexion courante et en ouvre une nouvelle sur l'URL donnée.
+     * Réservé aux tests d'intégration (ex: "jdbc:sqlite::memory:").
+     */
+    public static void reinitialiser(String url) throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+        connection = DriverManager.getConnection(url);
+        connection.createStatement().execute("PRAGMA foreign_keys = ON");
+    }
+
+    /**
      * Lit schema.sql depuis le classpath et exécute chaque instruction CREATE TABLE.
      * À appeler une seule fois au démarrage de l'application (dans App.start()).
      */

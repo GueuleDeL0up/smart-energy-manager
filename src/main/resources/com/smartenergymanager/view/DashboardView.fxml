@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<!--
+    DashboardView — Tableau de bord principal
+    TODO : remplacer ce placeholder par les vrais composants (KPI, alertes, graphiques)
+-->
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      alignment="CENTER" spacing="12">
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <Label text="Tableau de bord" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+    <Label text="[En construction — KPI, alertes et graphiques à venir]"
+           style="-fx-text-fill: #6b7280;"/>
+</VBox>

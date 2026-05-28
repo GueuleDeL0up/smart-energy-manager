@@ -1,0 +1,18 @@
+/* ═══════════════════════════════════════════════════════
+   Smart Energy Manager — Styles globaux
+   ═══════════════════════════════════════════════════════ */
+
+.root {
+    /* Palette de couleurs globale, réutilisable partout */
+    -sem-bg-dark:      #1a1d2e;
+    -sem-bg-sidebar:   #12152a;
+    -sem-bg-content:   #f0f2f8;
+    -sem-accent:       #4f8ef7;
+    -sem-accent-hover: #3a7ae8;
+    -sem-text-primary: #ffffff;
+    -sem-text-muted:   #8b92b3;
+    -sem-text-dark:    #1a1d2e;
+
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 13px;
+}
